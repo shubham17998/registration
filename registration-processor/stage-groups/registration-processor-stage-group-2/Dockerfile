@@ -66,12 +66,9 @@ ENV biosdk_zip_file_path=${biosdk_zip_path}
 
 # install packages and create user
 RUN apk -q update \
-&& apk add -q unzip sudo \
+&& apk add -q unzip \
 && addgroup -g ${container_user_gid} ${container_user_group} \
-&& adduser -s /bin/sh -u ${container_user_uid} -G ${container_user_group} -h /home/${container_user} --disabled-password ${container_user} \
-&& addgroup sudo \
-&& adduser ${container_user} sudo \
-&& echo "%sudo ALL=(ALL) NOPASSWD:/home/${container_user}/${biosdk_local_dir}/install.sh" >> /etc/sudoers
+&& adduser -u ${container_user_uid} -G ${container_user_group} -S -h ${container_user} -D ${container_user} --disabled-password
 
 # set working directory for the user
 WORKDIR /home/${container_user}
